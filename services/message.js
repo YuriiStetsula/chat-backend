@@ -8,7 +8,7 @@ const messages = [
     {
         id:2,
         body: "Everything ok, and you?",
-        senderId:2,
+        senderId:3,
         receiverId:1
     },
     {
@@ -118,17 +118,24 @@ module.exports = {
     getUsersChatWith: function(id,cb){
         let err = null;
         id = Number(id)
-         let chatWith = (function(id){
+        let chatWith = (function(id){
             return messages.filter(function(el){
-               return el.senderId === id
+               return el.senderId === id ||  el.receiverId === id
+                   
             })
          }(id))
+         console.log(chatWith)
           let newArr = [];
             chatWith.forEach(function(el){
-            if(newArr.indexOf(el.receiverId) === -1) {
-            newArr.push(el.receiverId)
-        }
+            if(el.receiverId !== id && newArr.indexOf(el.receiverId) === -1) {
+             newArr.push(el.receiverId)
+            }
+            if(el.senderId !== id && newArr.indexOf(el.senderId) === -1){
+             newArr.push(el.senderId)   
+            }
+        
         })
+        console.log(newArr)
         cb(err,newArr)
     }
 
